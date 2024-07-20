@@ -29,6 +29,26 @@ app.post("/create",async(req,res)=>{
     })
 })
 
+//viewall
+app.post("/viewall",(req,res)=>{
+    let token=req.headers.token
+    Jsonwebtoken.verify(token,"blogApp",async(error,decoded)=>{
+        if (decoded && decoded.email) {
+            postModel.find().then(
+                (items)=>{
+                    res.json(items)
+                }
+            ).catch(
+                (error)=>{
+                    res.json({"status":"error"})
+                }
+            )
+        } else {
+            res.json({"status":"Invalid Authentication"})
+        }
+    })
+})
+
 
 //SignIn
 app.post("/signin",async(req,res)=>{
